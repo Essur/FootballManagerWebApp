@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class TeamDTO {
     private String name;
     private Integer teamCommission;
+    private Integer balanceUSD;
 }

@@ -25,8 +25,11 @@ public class Team {
     @Column(name = "team_name", nullable = false)
     private String name;
 
-    @Column(name = "comission", nullable = false)
-    private Integer teamCommision;
+    @Column(name = "commission", nullable = false)
+    private Integer teamCommission;
+
+    @Column(name = "balance_usd", nullable = false)
+    private Integer balance;
 
     @OneToMany(mappedBy = "team")
     private List<Player> players;
@@ -45,13 +48,5 @@ public class Team {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 }
