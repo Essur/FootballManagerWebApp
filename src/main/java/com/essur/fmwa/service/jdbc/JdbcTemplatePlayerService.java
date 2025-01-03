@@ -2,7 +2,7 @@ package com.essur.fmwa.service.jdbc;
 
 import com.essur.fmwa.entity.Player;
 import com.essur.fmwa.entity.Team;
-import com.essur.fmwa.exception.custom.DataNotFoundException;
+import com.essur.fmwa.exception.DataNotFoundException;
 import com.essur.fmwa.model.PlayerDTO;
 import com.essur.fmwa.model.request.UpdatePlayerRequest;
 import com.essur.fmwa.model.response.PlayerInfoResponse;

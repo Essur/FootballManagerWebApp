@@ -1,7 +1,5 @@
 package com.essur.fmwa.exception;
 
-import com.essur.fmwa.exception.custom.BadRequestException;
-import com.essur.fmwa.exception.custom.DataNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

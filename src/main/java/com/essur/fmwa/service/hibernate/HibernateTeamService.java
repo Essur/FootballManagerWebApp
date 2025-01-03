@@ -1,8 +1,8 @@
 package com.essur.fmwa.service.hibernate;
 
 import com.essur.fmwa.entity.Team;
-import com.essur.fmwa.exception.custom.BadRequestException;
-import com.essur.fmwa.exception.custom.DataNotFoundException;
+import com.essur.fmwa.exception.BadRequestException;
+import com.essur.fmwa.exception.DataNotFoundException;
 import com.essur.fmwa.model.TeamDTO;
 import com.essur.fmwa.model.request.UpdateTeamRequest;
 import com.essur.fmwa.model.response.TeamInfoResponse;

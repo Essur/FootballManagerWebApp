@@ -1,4 +1,4 @@
-package com.essur.fmwa.exception.custom;
+package com.essur.fmwa.exception;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

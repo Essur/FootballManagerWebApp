@@ -2,8 +2,8 @@ package com.essur.fmwa.service;
 
 import com.essur.fmwa.entity.Player;
 import com.essur.fmwa.entity.Team;
-import com.essur.fmwa.exception.custom.BadRequestException;
-import com.essur.fmwa.exception.custom.DataNotFoundException;
+import com.essur.fmwa.exception.BadRequestException;
+import com.essur.fmwa.exception.DataNotFoundException;
 import com.essur.fmwa.utils.calculator.TotalPaymentCalculator;
 import jakarta.transaction.Transactional;
 
