@@ -2,23 +2,25 @@ package com.essur.fmwa.service;
 
 import com.essur.fmwa.entity.Player;
 import com.essur.fmwa.entity.Team;
+import com.essur.fmwa.exception.BadRequestException;
+import com.essur.fmwa.exception.TransferRequestException;
 import com.essur.fmwa.utils.calculator.TotalPaymentCalculator;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import jakarta.transaction.Transactional;
 
 import java.util.Objects;
 
 public abstract class AbstractPlayerTransferService {
-    public ResponseEntity<?> playerTransfer(Long playerId, Long buyerTeamId) {
+    @Transactional
+    public String playerTransfer(Long playerId, Long buyerTeamId) {
         Player player = getPlayerById(playerId);
         Team buyerTeam = getTeamById(buyerTeamId);
 
         if (player == null) {
-            return new ResponseEntity<>("Player not found", HttpStatus.NO_CONTENT);
+            throw new BadRequestException("Player with id " + playerId + " was not found");
         } else if (buyerTeam == null) {
-            return new ResponseEntity<>("Team not found", HttpStatus.NO_CONTENT);
+            throw new BadRequestException("Buyer team with id " + buyerTeamId + " was not found");
         } else if (Objects.equals(player.getTeam().getId(), buyerTeam.getId())) {
-            return new ResponseEntity<>("Could not transfer player from the same team", HttpStatus.CONFLICT);
+            throw new BadRequestException("Player with id " + playerId + " is already transferred");
         }
 
         Team sellerTeam = player.getTeam();
@@ -26,7 +28,7 @@ public abstract class AbstractPlayerTransferService {
         double totalPayment = TotalPaymentCalculator.calculateTotalPayment(player, sellerTeam);
 
         if (buyerTeam.getBalance() < totalPayment) {
-            return new ResponseEntity<>("Buyer team does not have enough funds.", HttpStatus.BAD_REQUEST);
+            throw new TransferRequestException("Buyer team balance is less than the total payment sum");
         }
 
         totalPayment = Math.round(totalPayment);
@@ -39,8 +41,8 @@ public abstract class AbstractPlayerTransferService {
         updateTeamData(sellerTeam);
         updatePlayerData(player);
 
-        return new ResponseEntity<>("Player " + player.getLastName() + " " + player.getFirstName() +
-                                    " was moved from " + sellerTeam.getName() + " to " + buyerTeam.getName(), HttpStatus.OK);
+        return "Player " + player.getLastName() + " " + player.getFirstName() +
+               " was moved from " + sellerTeam.getName() + " to " + buyerTeam.getName();
     }
 
     protected abstract Player getPlayerById(Long playerId);
