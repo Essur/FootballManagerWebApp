@@ -1,9 +1,9 @@
-package com.essur.fmwa.controller;
+package com.essur.fmwa.controller.hibernate;
 
 import com.essur.fmwa.Routes;
 import com.essur.fmwa.model.PlayerDTO;
 import com.essur.fmwa.model.request.UpdatePlayerRequest;
-import com.essur.fmwa.service.HibernatePlayerService;
+import com.essur.fmwa.service.hibernate.HibernatePlayerService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;

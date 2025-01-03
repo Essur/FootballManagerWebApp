@@ -15,8 +15,6 @@ import java.util.Objects;
 @Entity
 @Table(name = "teams")
 public class Team {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -31,7 +29,7 @@ public class Team {
     @Column(name = "balance_usd", nullable = false)
     private Integer balance;
 
-    @OneToMany(mappedBy = "team")
+    @OneToMany(mappedBy = "team", cascade = CascadeType.REMOVE)
     private List<Player> players;
 
     @Override
@@ -48,5 +46,14 @@ public class Team {
     @Override
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
+
+    @Override
+    public String toString() {
+        return getClass().getSimpleName() + "(" +
+               "id = " + id + ", " +
+               "name = " + name + ", " +
+               "teamCommission = " + teamCommission + ", " +
+               "balance = " + balance + ")";
     }
 }

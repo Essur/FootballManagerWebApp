@@ -1,6 +1,5 @@
 package com.essur.fmwa.model.response;
 
-import com.essur.fmwa.entity.Player;
 import com.essur.fmwa.model.PlayerDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TeamInfoResponse {
+    private Long teamId;
     private String teamName;
-    private String teamId;
+    private Integer commission;
+    private Integer balance;
     private List<PlayerDTO> players;
 }

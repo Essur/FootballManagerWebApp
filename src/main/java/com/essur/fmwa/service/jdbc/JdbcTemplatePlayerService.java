@@ -1,11 +1,11 @@
-package com.essur.fmwa.service;
+package com.essur.fmwa.service.jdbc;
 
 import com.essur.fmwa.entity.Player;
 import com.essur.fmwa.entity.Team;
 import com.essur.fmwa.model.PlayerDTO;
 import com.essur.fmwa.model.request.UpdatePlayerRequest;
 import com.essur.fmwa.model.response.PlayerInfoResponse;
-import com.essur.fmwa.utils.PlayerInfoResponseMapper;
+import com.essur.fmwa.utils.mapper.PlayerInfoResponseMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +23,11 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class JDBCTemplatePlayerService {
+public class JdbcTemplatePlayerService {
     private final JdbcTemplate jdbcTemplate;
 
     public ResponseEntity<?> createPlayer(PlayerDTO player) {
@@ -65,7 +66,7 @@ public class JDBCTemplatePlayerService {
         List<Player> player = jdbcTemplate.query(sql, new PlayerRowMapper(), playerId);
 
         if (player.isEmpty()) {
-            return new ResponseEntity<>("PLayer with id " + playerId + " was not found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("PLayer with id " + playerId + " was not found", HttpStatus.NO_CONTENT);
         }
 
         PlayerInfoResponse response = PlayerInfoResponseMapper.getPlayerInfoResponse(player.get(0));
@@ -107,9 +108,9 @@ public class JDBCTemplatePlayerService {
 
     public ResponseEntity<?> getAllPlayers() {
         String sql = """
-                                SELECT p.*, t.*
-                                FROM players p
-                                LEFT JOIN teams t ON p.team_id = t.id
+                SELECT p.*, t.*
+                FROM players p
+                LEFT JOIN teams t ON p.team_id = t.id
                 """;
 
         List<Player> players = jdbcTemplate.query(sql, new PlayerRowMapper());
@@ -120,16 +121,40 @@ public class JDBCTemplatePlayerService {
 
     private ResponseEntity<String> checkPlayerInDB(Long playerId) {
         String checkPlayerSql = "SELECT COUNT(*) FROM players WHERE id = ?";
-        int count = jdbcTemplate.queryForObject(checkPlayerSql, Integer.class, playerId);
-
+        int count = Optional.ofNullable(jdbcTemplate.queryForObject(checkPlayerSql, Integer.class, playerId)).orElse(0);
         if (count == 0) {
-            return new ResponseEntity<>("Player with ID " + playerId + " not found.", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Player with ID " + playerId + " not found.", HttpStatus.NO_CONTENT);
         }
         return null;
     }
 
-    private static class PlayerRowMapper implements RowMapper<Player>, Serializable {
+    public Player getPlayerEntityById(Long playerId) {String sql = """
+                SELECT p.*, t.*
+                FROM players p
+                LEFT JOIN teams t ON p.team_id = t.id
+                WHERE p.id = ?
+                """;
 
+        List<Player> player = jdbcTemplate.query(sql, new PlayerRowMapper(), playerId);
+        if (player.isEmpty()) {
+            return null;
+        }
+        return player.get(0);
+    }
+
+    public void updatePlayerData(Player player) {
+        String sql = """
+                UPDATE players
+                SET team_id = ?
+                WHERE id = ?
+                """;
+
+        jdbcTemplate.update(sql,
+                player.getTeam().getId(),
+                player.getId());
+    }
+
+    private static class PlayerRowMapper implements RowMapper<Player>, Serializable {
         @Serial
         private static final long serialVersionUID = 1L;
 

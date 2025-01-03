@@ -18,4 +18,5 @@ CREATE TABLE IF NOT EXISTS players
     age                  INT          NOT NULL,
     team_id              BIGINT,
     FOREIGN KEY (team_id) REFERENCES teams (id)
+    ON DELETE SET NULL
 );
