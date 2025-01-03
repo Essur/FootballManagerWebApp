@@ -2,7 +2,7 @@ package com.essur.fmwa.service.hibernate;
 
 import com.essur.fmwa.entity.Player;
 import com.essur.fmwa.entity.Team;
-import com.essur.fmwa.exception.BadRequestException;
+import com.essur.fmwa.exception.custom.DataNotFoundException;
 import com.essur.fmwa.model.PlayerDTO;
 import com.essur.fmwa.model.request.UpdatePlayerRequest;
 import com.essur.fmwa.model.response.PlayerInfoResponse;
@@ -34,7 +34,7 @@ public class HibernatePlayerService {
         Team team = entityManager.find(Team.class, playerDTO.getTeamId());
 
         if (team == null) {
-            throw new BadRequestException("Team with id " + playerDTO.getTeamId() + " not found");
+            throw new DataNotFoundException("Team with id " + playerDTO.getTeamId() + " not found");
         }
         playerEntity.setTeam(team);
 
@@ -46,7 +46,7 @@ public class HibernatePlayerService {
     public void deletePlayerById(Long playerId) {
         Player player = entityManager.find(Player.class, playerId);
         if (player == null) {
-            throw new BadRequestException("Player with id " + playerId + " was not found");
+            throw new DataNotFoundException("Player with id " + playerId + " was not found");
         }
         entityManager.remove(player);
     }
@@ -54,7 +54,7 @@ public class HibernatePlayerService {
     public PlayerInfoResponse getPlayerById(Long playerId) {
         Player playerById = entityManager.find(Player.class, playerId);
         if (playerById == null) {
-            throw new BadRequestException("Player with id " + playerId + " was not found");
+            throw new DataNotFoundException("Player with id " + playerId + " was not found");
         }
         PlayerInfoResponse response = new PlayerInfoResponse();
 
@@ -71,7 +71,7 @@ public class HibernatePlayerService {
     public PlayerInfoResponse updatePlayerById(Long playerId, UpdatePlayerRequest updatePlayerRequest) {
         Player playerEntity = entityManager.find(Player.class, playerId);
         if (playerEntity == null) {
-            throw new BadRequestException("Player with id " + playerId + " was not found");
+            throw new DataNotFoundException("Player with id " + playerId + " was not found");
         }
         playerEntity.setFirstName(updatePlayerRequest.getFirstName());
         playerEntity.setLastName(updatePlayerRequest.getLastName());
@@ -82,7 +82,7 @@ public class HibernatePlayerService {
         Team team = entityManager.find(Team.class, updatePlayerRequest.getTeamId());
 
         if (team == null) {
-            throw new BadRequestException("Team with id " + updatePlayerRequest.getTeamId() + " not found");
+            throw new DataNotFoundException("Team with id " + updatePlayerRequest.getTeamId() + " not found");
         }
         playerEntity.setTeam(team);
 
@@ -99,7 +99,7 @@ public class HibernatePlayerService {
 
         List<PlayerInfoResponse> response = PlayerInfoResponseMapper.getPlayerInfoResponse(players);
         if (response.isEmpty()) {
-            throw new BadRequestException("No players found");
+            throw new DataNotFoundException("No players found");
         }
         return response;
     }

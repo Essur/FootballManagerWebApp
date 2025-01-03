@@ -1,5 +1,7 @@
 package com.essur.fmwa.exception;
 
+import com.essur.fmwa.exception.custom.BadRequestException;
+import com.essur.fmwa.exception.custom.DataNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -9,14 +11,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<AppError> catchResourceNotFoundException(BadRequestException e) {
+    @ExceptionHandler(DataNotFoundException.class)
+    public ResponseEntity<AppError> catchResourceNotFoundException(DataNotFoundException e) {
         log.error(e.getMessage(), e);
         return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(), e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(TransferRequestException.class)
-    public ResponseEntity<AppError> catchResourceNotFoundException(TransferRequestException e) {
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<AppError> catchResourceNotFoundException(BadRequestException e) {
         log.error(e.getMessage(), e);
         return new ResponseEntity<>(new AppError(HttpStatus.BAD_REQUEST.value(), e.getMessage()), HttpStatus.BAD_REQUEST);
     }

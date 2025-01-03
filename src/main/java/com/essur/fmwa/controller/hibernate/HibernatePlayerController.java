@@ -19,6 +19,7 @@ import java.util.List;
 public class HibernatePlayerController {
     private final HibernatePlayerService hibernatePlayerService;
 
+    @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = Routes.H_GET_ALL_PLAYERS)
     public List<PlayerInfoResponse> getAllPlayers() {
         return hibernatePlayerService.getAllPlayers();
@@ -31,6 +32,7 @@ public class HibernatePlayerController {
         return hibernatePlayerService.createPlayer(playerDTO);
     }
 
+    @ResponseStatus(value = HttpStatus.OK)
     @PutMapping(value = Routes.H_UPDATE_PLAYER_BY_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
     public PlayerInfoResponse updatePlayer(@RequestParam("playerId") Long playerId,
                                            @RequestBody UpdatePlayerRequest playerDTO) {

@@ -2,13 +2,12 @@ package com.essur.fmwa.service.jdbc;
 
 import com.essur.fmwa.entity.Player;
 import com.essur.fmwa.entity.Team;
+import com.essur.fmwa.exception.custom.DataNotFoundException;
 import com.essur.fmwa.model.PlayerDTO;
 import com.essur.fmwa.model.request.UpdatePlayerRequest;
 import com.essur.fmwa.model.response.PlayerInfoResponse;
 import com.essur.fmwa.utils.mapper.PlayerInfoResponseMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -30,7 +29,7 @@ import java.util.Optional;
 public class JdbcTemplatePlayerService {
     private final JdbcTemplate jdbcTemplate;
 
-    public ResponseEntity<?> createPlayer(PlayerDTO player) {
+    public Long createPlayer(PlayerDTO player) {
         String sql = """
                 INSERT INTO players (first_name, last_name, middle_name, experience_in_months, age, team_id) 
                 VALUES (?, ?, ?, ?, ?, ?)
@@ -50,12 +49,10 @@ public class JdbcTemplatePlayerService {
             return ps;
         }, keyHolder);
 
-        Long generatedId = Objects.requireNonNull(keyHolder.getKey()).longValue();
-
-        return new ResponseEntity<>(generatedId, HttpStatus.CREATED);
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
-    public ResponseEntity<?> getPlayerById(Long playerId) {
+    public PlayerInfoResponse getPlayerById(Long playerId) {
         String sql = """
                 SELECT p.*, t.*
                 FROM players p
@@ -66,16 +63,14 @@ public class JdbcTemplatePlayerService {
         List<Player> player = jdbcTemplate.query(sql, new PlayerRowMapper(), playerId);
 
         if (player.isEmpty()) {
-            return new ResponseEntity<>("PLayer with id " + playerId + " was not found", HttpStatus.NO_CONTENT);
+            throw new DataNotFoundException("PLayer with id " + playerId + " was not found");
         }
 
-        PlayerInfoResponse response = PlayerInfoResponseMapper.getPlayerInfoResponse(player.get(0));
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return PlayerInfoResponseMapper.getPlayerInfoResponse(player.get(0));
     }
 
-    public ResponseEntity<?> updatePlayer(Long playerId, UpdatePlayerRequest updatePlayerRequest) {
-        ResponseEntity<String> NOT_FOUND = checkPlayerInDB(playerId);
-        if (NOT_FOUND != null) return NOT_FOUND;
+    public PlayerInfoResponse updatePlayer(Long playerId, UpdatePlayerRequest updatePlayerRequest) {
+        checkPlayerInDB(playerId);
 
         String sql = """
                 UPDATE players
@@ -91,22 +86,20 @@ public class JdbcTemplatePlayerService {
                 updatePlayerRequest.getAge(),
                 playerId);
 
-        return new ResponseEntity<>("Player with id " + playerId + " was updated", HttpStatus.OK);
+        return getPlayerById(playerId);
     }
 
-    public ResponseEntity<?> deletePlayer(Long playerId) {
-        ResponseEntity<String> NOT_FOUND = checkPlayerInDB(playerId);
-        if (NOT_FOUND != null) return NOT_FOUND;
+    public void deletePlayer(Long playerId) {
+        checkPlayerInDB(playerId);
 
         String sql = """
                 DELETE FROM players WHERE id = ?
                 """;
 
         jdbcTemplate.update(sql, playerId);
-        return new ResponseEntity<>("Player with id " + playerId + " was deleted", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getAllPlayers() {
+    public List<PlayerInfoResponse> getAllPlayers() {
         String sql = """
                 SELECT p.*, t.*
                 FROM players p
@@ -114,21 +107,22 @@ public class JdbcTemplatePlayerService {
                 """;
 
         List<Player> players = jdbcTemplate.query(sql, new PlayerRowMapper());
-
-        List<PlayerInfoResponse> response = PlayerInfoResponseMapper.getPlayerInfoResponse(players);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        if (players.isEmpty()) {
+            throw new DataNotFoundException("Players list is empty");
+        }
+        return PlayerInfoResponseMapper.getPlayerInfoResponse(players);
     }
 
-    private ResponseEntity<String> checkPlayerInDB(Long playerId) {
+    private void checkPlayerInDB(Long playerId) {
         String checkPlayerSql = "SELECT COUNT(*) FROM players WHERE id = ?";
         int count = Optional.ofNullable(jdbcTemplate.queryForObject(checkPlayerSql, Integer.class, playerId)).orElse(0);
         if (count == 0) {
-            return new ResponseEntity<>("Player with ID " + playerId + " not found.", HttpStatus.NO_CONTENT);
+            throw new DataNotFoundException("Player with ID " + playerId + " not found.");
         }
-        return null;
     }
 
-    public Player getPlayerEntityById(Long playerId) {String sql = """
+    public Player getPlayerEntityById(Long playerId) {
+        String sql = """
                 SELECT p.*, t.*
                 FROM players p
                 LEFT JOIN teams t ON p.team_id = t.id

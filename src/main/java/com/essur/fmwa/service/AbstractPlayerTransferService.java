@@ -2,8 +2,8 @@ package com.essur.fmwa.service;
 
 import com.essur.fmwa.entity.Player;
 import com.essur.fmwa.entity.Team;
-import com.essur.fmwa.exception.BadRequestException;
-import com.essur.fmwa.exception.TransferRequestException;
+import com.essur.fmwa.exception.custom.BadRequestException;
+import com.essur.fmwa.exception.custom.DataNotFoundException;
 import com.essur.fmwa.utils.calculator.TotalPaymentCalculator;
 import jakarta.transaction.Transactional;
 
@@ -16,11 +16,11 @@ public abstract class AbstractPlayerTransferService {
         Team buyerTeam = getTeamById(buyerTeamId);
 
         if (player == null) {
-            throw new BadRequestException("Player with id " + playerId + " was not found");
+            throw new DataNotFoundException("Player with id " + playerId + " was not found");
         } else if (buyerTeam == null) {
-            throw new BadRequestException("Buyer team with id " + buyerTeamId + " was not found");
+            throw new DataNotFoundException("Buyer team with id " + buyerTeamId + " was not found");
         } else if (Objects.equals(player.getTeam().getId(), buyerTeam.getId())) {
-            throw new BadRequestException("Player with id " + playerId + " is already transferred");
+            throw new DataNotFoundException("Player with id " + playerId + " is already transferred");
         }
 
         Team sellerTeam = player.getTeam();
@@ -28,7 +28,7 @@ public abstract class AbstractPlayerTransferService {
         double totalPayment = TotalPaymentCalculator.calculateTotalPayment(player, sellerTeam);
 
         if (buyerTeam.getBalance() < totalPayment) {
-            throw new TransferRequestException("Buyer team balance is less than the total payment sum");
+            throw new BadRequestException("Buyer team balance is less than the total payment sum");
         }
 
         totalPayment = Math.round(totalPayment);

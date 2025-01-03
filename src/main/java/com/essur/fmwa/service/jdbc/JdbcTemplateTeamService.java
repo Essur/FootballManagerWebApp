@@ -2,14 +2,14 @@ package com.essur.fmwa.service.jdbc;
 
 import com.essur.fmwa.entity.Player;
 import com.essur.fmwa.entity.Team;
+import com.essur.fmwa.exception.custom.BadRequestException;
+import com.essur.fmwa.exception.custom.DataNotFoundException;
 import com.essur.fmwa.model.TeamDTO;
 import com.essur.fmwa.model.request.UpdateTeamRequest;
 import com.essur.fmwa.model.response.TeamInfoResponse;
 import com.essur.fmwa.utils.mapper.TeamInfoResponseMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -32,9 +32,9 @@ import java.util.Optional;
 public class JdbcTemplateTeamService {
     private final JdbcTemplate jdbcTemplate;
 
-    public ResponseEntity<?> createTeam(TeamDTO teamDTO) {
+    public Long createTeam(TeamDTO teamDTO) {
         if (teamDTO.getTeamCommission() > 10) {
-            return new ResponseEntity<>("Commission must be 10 or less", HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Commission must be 10 or less");
         }
         String sql = """
                 INSERT INTO teams (team_name, commission, balance_usd)
@@ -51,11 +51,10 @@ public class JdbcTemplateTeamService {
             return ps;
         }, keyHolder);
 
-        Long generatedId = Objects.requireNonNull(keyHolder.getKey()).longValue();
-        return new ResponseEntity<>(generatedId, HttpStatus.CREATED);
+        return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
 
-    public ResponseEntity<?> getTeamById(Long teamId) {
+    public TeamInfoResponse getTeamById(Long teamId) {
         String sql = """
                 SELECT p.id AS player_id, p.first_name, p.last_name, p.middle_name, p.experience_in_months, p.age,
                         t.id AS team_id, t.team_name, t.commission, t.balance_usd
@@ -67,19 +66,17 @@ public class JdbcTemplateTeamService {
         List<Team> team = jdbcTemplate.query(sql, new TeamRowMapper(), teamId);
 
         if (team.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            throw new DataNotFoundException("Team with id " + teamId + " not found");
         }
 
-        TeamInfoResponse response = TeamInfoResponseMapper.getTeamInfoResponse(team.get(0));
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return TeamInfoResponseMapper.getTeamInfoResponse(team.get(0));
     }
 
-    public ResponseEntity<?> updateTeam(Long teamId, UpdateTeamRequest updateTeamRequest) {
+    public TeamInfoResponse updateTeam(Long teamId, UpdateTeamRequest updateTeamRequest) {
         if (updateTeamRequest.getTeamCommission() > 10) {
-            return new ResponseEntity<>("Commission must be 10 or less", HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Commission must be 10 or less");
         }
-        ResponseEntity<String> NOT_FOUND = checkTeamInDB(teamId);
-        if (NOT_FOUND != null) return NOT_FOUND;
+        checkTeamInDB(teamId);
 
         String sql = """
                 UPDATE teams
@@ -93,21 +90,19 @@ public class JdbcTemplateTeamService {
                 updateTeamRequest.getBalanceUSD(),
                 teamId);
 
-        return new ResponseEntity<>("Team with id " + teamId + " was updated", HttpStatus.OK);
+        return getTeamById(teamId);
     }
 
-    public ResponseEntity<?> deleteTeam(Long teamId) {
-        ResponseEntity<String> NOT_FOUND = checkTeamInDB(teamId);
-        if (NOT_FOUND != null) return NOT_FOUND;
+    public void deleteTeam(Long teamId) {
+        checkTeamInDB(teamId);
 
         String sql = """
                 DELETE FROM teams WHERE id = ?
                 """;
         jdbcTemplate.update(sql, teamId);
-        return new ResponseEntity<>("Team with id " + teamId + " was deleted", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getAllPlayers() {
+    public List<TeamInfoResponse> getAllPlayers() {
         String sql = """
                 SELECT t.id AS team_id, t.team_name, t.commission, t.balance_usd,
                        p.id AS player_id, p.first_name, p.last_name, p.middle_name, p.experience_in_months, p.age
@@ -118,21 +113,19 @@ public class JdbcTemplateTeamService {
         List<Team> teams = jdbcTemplate.query(sql, new TeamRowMapper());
         teams.forEach(t -> log.info(t.toString()));
         if (teams.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            throw new DataNotFoundException("Teams list is empty");
         }
-        List<TeamInfoResponse> response = TeamInfoResponseMapper.getTeamInfoResponse(teams);
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return TeamInfoResponseMapper.getTeamInfoResponse(teams);
     }
 
-    private ResponseEntity<String> checkTeamInDB(Long teamId) {
+    private void checkTeamInDB(Long teamId) {
         String checkTeamSql = """
                 SELECT COUNT(*) FROM teams WHERE id = ?
                 """;
         int count = Optional.ofNullable(jdbcTemplate.queryForObject(checkTeamSql, Integer.class, teamId)).orElse(0);
         if (count == 0) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            throw new DataNotFoundException("Team with id " + teamId + " not found");
         }
-        return null;
     }
 
     public Team getTeamEntityById(Long buyerTeamId) {
