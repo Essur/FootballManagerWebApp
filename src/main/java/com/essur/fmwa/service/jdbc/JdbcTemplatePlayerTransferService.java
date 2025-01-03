@@ -4,10 +4,8 @@ import com.essur.fmwa.entity.Player;
 import com.essur.fmwa.entity.Team;
 import com.essur.fmwa.service.AbstractPlayerTransferService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JdbcTemplatePlayerTransferService extends AbstractPlayerTransferService {

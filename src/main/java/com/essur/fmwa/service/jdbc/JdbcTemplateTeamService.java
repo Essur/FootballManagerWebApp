@@ -9,7 +9,6 @@ import com.essur.fmwa.model.request.UpdateTeamRequest;
 import com.essur.fmwa.model.response.TeamInfoResponse;
 import com.essur.fmwa.utils.mapper.TeamInfoResponseMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.support.GeneratedKeyHolder;
@@ -26,7 +25,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
-@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JdbcTemplateTeamService {
@@ -111,7 +109,6 @@ public class JdbcTemplateTeamService {
                 ORDER BY t.id;
                 """;
         List<Team> teams = jdbcTemplate.query(sql, new TeamRowMapper());
-        teams.forEach(t -> log.info(t.toString()));
         if (teams.isEmpty()) {
             throw new DataNotFoundException("Teams list is empty");
         }

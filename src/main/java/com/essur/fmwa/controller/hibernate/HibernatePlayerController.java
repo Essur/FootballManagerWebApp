@@ -6,14 +6,12 @@ import com.essur.fmwa.model.request.UpdatePlayerRequest;
 import com.essur.fmwa.model.response.PlayerInfoResponse;
 import com.essur.fmwa.service.hibernate.HibernatePlayerService;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Slf4j
 @RestController
 @RequiredArgsConstructor
 public class HibernatePlayerController {
@@ -28,7 +26,6 @@ public class HibernatePlayerController {
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(value = Routes.H_CREATE_PLAYER, consumes = MediaType.APPLICATION_JSON_VALUE)
     public Long createPlayer(@RequestBody PlayerDTO playerDTO) {
-        log.info("Creating player: {}", playerDTO);
         return hibernatePlayerService.createPlayer(playerDTO);
     }
 
@@ -50,5 +47,4 @@ public class HibernatePlayerController {
     public void deletePlayer(@RequestParam Long playerId) {
         hibernatePlayerService.deletePlayerById(playerId);
     }
-
 }
