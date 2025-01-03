@@ -2,6 +2,7 @@ package com.essur.fmwa.service.hibernate;
 
 import com.essur.fmwa.entity.Player;
 import com.essur.fmwa.entity.Team;
+import com.essur.fmwa.exception.BadRequestException;
 import com.essur.fmwa.model.PlayerDTO;
 import com.essur.fmwa.model.request.UpdatePlayerRequest;
 import com.essur.fmwa.model.response.PlayerInfoResponse;
@@ -10,8 +11,6 @@ import jakarta.persistence.EntityManager;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +22,7 @@ public class HibernatePlayerService {
     private final EntityManager entityManager;
 
     @Transactional
-    public ResponseEntity<?> createPlayer(PlayerDTO playerDTO) {
+    public Long createPlayer(PlayerDTO playerDTO) {
         Player playerEntity = new Player();
 
         playerEntity.setFirstName(playerDTO.getFirstName());
@@ -35,28 +34,27 @@ public class HibernatePlayerService {
         Team team = entityManager.find(Team.class, playerDTO.getTeamId());
 
         if (team == null) {
-            return new ResponseEntity<>("Team with id " + playerDTO.getTeamId() + " not found", HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Team with id " + playerDTO.getTeamId() + " not found");
         }
         playerEntity.setTeam(team);
 
         entityManager.persist(playerEntity);
-        return new ResponseEntity<>(playerEntity.getId(), HttpStatus.CREATED);
+        return playerEntity.getId();
     }
 
     @Transactional
-    public ResponseEntity<?> deletePlayerById(Long playerId) {
+    public void deletePlayerById(Long playerId) {
         Player player = entityManager.find(Player.class, playerId);
         if (player == null) {
-            return new ResponseEntity<>("Player with id " + playerId + " was not found", HttpStatus.NO_CONTENT);
+            throw new BadRequestException("Player with id " + playerId + " was not found");
         }
         entityManager.remove(player);
-        return new ResponseEntity<>("Player was successfully deleted", HttpStatus.OK);
     }
 
-    public ResponseEntity<?> getPlayerById(Long playerId) {
+    public PlayerInfoResponse getPlayerById(Long playerId) {
         Player playerById = entityManager.find(Player.class, playerId);
         if (playerById == null) {
-            return new ResponseEntity<>("Player was not found", HttpStatus.NO_CONTENT);
+            throw new BadRequestException("Player with id " + playerId + " was not found");
         }
         PlayerInfoResponse response = new PlayerInfoResponse();
 
@@ -66,34 +64,44 @@ public class HibernatePlayerService {
         response.setAge(playerById.getAge());
         response.setTeam(playerById.getTeam().getName());
 
-        return new ResponseEntity<>(response, HttpStatus.FOUND);
+        return response;
     }
 
     @Transactional
-    public ResponseEntity<?> updatePlayerById(Long playerId, UpdatePlayerRequest playerDTO) {
+    public PlayerInfoResponse updatePlayerById(Long playerId, UpdatePlayerRequest updatePlayerRequest) {
         Player playerEntity = entityManager.find(Player.class, playerId);
         if (playerEntity == null) {
-            return new ResponseEntity<>("Player was not found", HttpStatus.NO_CONTENT);
+            throw new BadRequestException("Player with id " + playerId + " was not found");
         }
-        playerEntity.setFirstName(playerDTO.getFirstName());
-        playerEntity.setLastName(playerDTO.getLastName());
-        playerEntity.setMiddleName(playerDTO.getMiddleName());
-        playerEntity.setAge(playerDTO.getAge());
-        playerEntity.setExperience(playerDTO.getExperience());
+        playerEntity.setFirstName(updatePlayerRequest.getFirstName());
+        playerEntity.setLastName(updatePlayerRequest.getLastName());
+        playerEntity.setMiddleName(updatePlayerRequest.getMiddleName());
+        playerEntity.setAge(updatePlayerRequest.getAge());
+        playerEntity.setExperience(updatePlayerRequest.getExperience());
+
+        Team team = entityManager.find(Team.class, updatePlayerRequest.getTeamId());
+
+        if (team == null) {
+            throw new BadRequestException("Team with id " + updatePlayerRequest.getTeamId() + " not found");
+        }
+        playerEntity.setTeam(team);
+
         entityManager.merge(playerEntity);
-        return new ResponseEntity<>("Player was successfully updated", HttpStatus.OK);
+
+        return PlayerInfoResponseMapper.getPlayerInfoResponse(playerEntity);
     }
 
 
-    public ResponseEntity<?> getAllPlayers() {
+    public List<PlayerInfoResponse> getAllPlayers() {
         List<Player> players = entityManager
                 .createQuery("SELECT p FROM Player p", Player.class)
                 .getResultList();
 
         List<PlayerInfoResponse> response = PlayerInfoResponseMapper.getPlayerInfoResponse(players);
-
-        log.info(response.toString());
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        if (response.isEmpty()) {
+            throw new BadRequestException("No players found");
+        }
+        return response;
     }
 
     public Player getPlayerEntityById(Long playerId) {

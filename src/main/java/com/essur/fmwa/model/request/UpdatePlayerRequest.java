@@ -13,4 +13,5 @@ public class UpdatePlayerRequest {
     private String middleName;
     private Integer experience;
     private Integer age;
+    private Long teamId;
 }
