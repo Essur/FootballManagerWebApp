@@ -34,7 +34,7 @@ public class HibernatePlayerService {
         Team team = entityManager.find(Team.class, playerDTO.getTeamId());
 
         if (team == null) {
-            return new ResponseEntity<>("Team with id " + playerDTO.getTeamId() + " not found",HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("Team with id " + playerDTO.getTeamId() + " not found", HttpStatus.NOT_FOUND);
         }
         pEntity.setTeam(team);
 

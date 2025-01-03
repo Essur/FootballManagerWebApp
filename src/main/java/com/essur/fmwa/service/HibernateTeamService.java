@@ -9,5 +9,5 @@ import org.springframework.stereotype.Service;
 public class HibernateTeamService {
     private final EntityManager entityManager;
 
-    
+
 }
