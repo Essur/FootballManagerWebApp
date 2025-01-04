@@ -1,0 +1,2153 @@
+{
+	"info": {
+		"_postman_id": "615ce228-c69c-4a28-b24f-7ec0999b8dda",
+		"name": "Football-Manager-Web-App",
+		"description": "This Postman collection is designed to test the endpoints of the Football Manager Web Application. Each folder in the collection corresponds to a specific set of related endpoints, and each folder is further divided into **Good Requests** and **Bad Requests** to ensure thorough testing of the application’s behavior under different scenarios.\n\n## Folder Structure\n\n### 1\\. **Good Requests**\n\n- Hibernate requests\n    \n- JDBC Template requests\n    \n- Contains requests that provide valid data and parameters.\n    \n- These requests are expected to return successful responses with appropriate status codes such as:\n    \n    - `200 OK` for retrieving data or performing updates.\n        \n    - `201 Created` for creating new resources.\n        \n\n### 2\\. **Bad Requests**\n\n- Hibernate requests\n    \n- JDBC Template requests\n    \n- In name of request can see short descriptiong of error\n    \n- Contains requests designed to simulate invalid input, missing data, or other error scenarios.\n    \n- These requests are expected to return error responses with status codes such as:\n    \n    - `400 Bad Request` for invalid or missing parameters.\n        \n    - `404 Not Found` for non-existent resources.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24976968",
+		"_collection_link": "https://www.postman.com/essur/workspace/public-workspace/collection/24976968-615ce228-c69c-4a28-b24f-7ec0999b8dda?action=share&source=collection_link&creator=24976968"
+	},
+	"item": [
+		{
+			"name": "Player transfer requests",
+			"item": [
+				{
+					"name": "Good requests",
+					"item": [
+						{
+							"name": "Hibernate",
+							"item": [
+								{
+									"name": "Transfer request",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/hi-player/playerTransfer?playerId=1&buyerTeamId=2",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"hi-player",
+												"playerTransfer"
+											],
+											"query": [
+												{
+													"key": "playerId",
+													"value": "1"
+												},
+												{
+													"key": "buyerTeamId",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"description": "Request using hibernate controller and service for player transfer"
+						},
+						{
+							"name": "JDBC Template",
+							"item": [
+								{
+									"name": "Transfer request",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/jdbc-player/playerTransfer?playerId=1&buyerTeamId=2",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"jdbc-player",
+												"playerTransfer"
+											],
+											"query": [
+												{
+													"key": "playerId",
+													"value": "1"
+												},
+												{
+													"key": "buyerTeamId",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							],
+							"description": "Request using jdbc template controller and service for player transfer"
+						}
+					],
+					"description": "Successfull requests which work properly and giving response with code\n\n- OK (200)\n    \n- CREATED (201)"
+				},
+				{
+					"name": "Bad requests",
+					"item": [
+						{
+							"name": "Hibernate",
+							"item": [
+								{
+									"name": "Same team transfer",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/hi-player/playerTransfer?playerId=1&buyerTeamId=1",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"hi-player",
+												"playerTransfer"
+											],
+											"query": [
+												{
+													"key": "playerId",
+													"value": "1"
+												},
+												{
+													"key": "buyerTeamId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Buyer not enough funds",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/hi-player/playerTransfer?playerId=1&buyerTeamId=3",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"hi-player",
+												"playerTransfer"
+											],
+											"query": [
+												{
+													"key": "playerId",
+													"value": "1"
+												},
+												{
+													"key": "buyerTeamId",
+													"value": "3"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JDBC Template",
+							"item": [
+								{
+									"name": "Same team transfer",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/jdbc-player/playerTransfer?playerId=1&buyerTeamId=1",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"jdbc-player",
+												"playerTransfer"
+											],
+											"query": [
+												{
+													"key": "playerId",
+													"value": "1"
+												},
+												{
+													"key": "buyerTeamId",
+													"value": "1"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Buyer not enough funds",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/jdbc-player/playerTransfer?playerId=1&buyerTeamId=3",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"jdbc-player",
+												"playerTransfer"
+											],
+											"query": [
+												{
+													"key": "playerId",
+													"value": "1"
+												},
+												{
+													"key": "buyerTeamId",
+													"value": "3"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					],
+					"description": "Requests which get in response ResponseEntity with error code and message from server, which can be proceed on front-end"
+				}
+			],
+			"description": "Request fro tranfer players from seller team to buyer team"
+		},
+		{
+			"name": "Players requests",
+			"item": [
+				{
+					"name": "Good requests",
+					"item": [
+						{
+							"name": "Hibernate",
+							"item": [
+								{
+									"name": "Get all players",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/hi-player/getAll",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"hi-player",
+												"getAll"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create player",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"oleg\",\n    \"lastName\": \"test\",\n    \"middleName\": \"test\",\n    \"experience\": 5,\n    \"age\": 23,\n    \"teamId\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8090/api/v1/hi-player/create",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"hi-player",
+												"create"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get player by id",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "playerId",
+													"value": "6",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "localhost:8090/api/v1/hi-player/getById",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"hi-player",
+												"getById"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update player",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"oleg2\",\n    \"lastName\": \"test1\",\n    \"middleName\": \"test1\",\n    \"experience\": 10,\n    \"age\": 26,\n    \"teamId\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8090/api/v1/hi-player/update?playerId=6",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"hi-player",
+												"update"
+											],
+											"query": [
+												{
+													"key": "playerId",
+													"value": "6"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete player",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "playerId",
+													"value": "6",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "localhost:8090/api/v1/hi-player/delete",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"hi-player",
+												"delete"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JDBC Template",
+							"item": [
+								{
+									"name": "Get all players",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/jdbc-player/getAll",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"jdbc-player",
+												"getAll"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create player",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"oleg\",\n    \"lastName\": \"test\",\n    \"middleName\": \"test\",\n    \"experience\": 5,\n    \"age\": 23,\n    \"teamId\": 1\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8090/api/v1/jdbc-player/create",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"jdbc-player",
+												"create"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update player",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"firstName\": \"stepan\",\n    \"lastName\": \"test\",\n    \"middleName\": \"test\",\n    \"experience\": 5,\n    \"age\": 23\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8090/api/v1/jdbc-player/update?playerId=6",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"jdbc-player",
+												"update"
+											],
+											"query": [
+												{
+													"key": "playerId",
+													"value": "6"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete player",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/jdbc-player/delete?playerId=6",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"jdbc-player",
+												"delete"
+											],
+											"query": [
+												{
+													"key": "playerId",
+													"value": "6"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get player by id",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "playerId",
+													"value": "1",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "localhost:8090/api/v1/jdbc-player/getById",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"jdbc-player",
+												"getById"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Bad requests",
+					"item": [
+						{
+							"name": "Hibernate",
+							"item": [
+								{
+									"name": "Create player",
+									"item": [
+										{
+											"name": "Missing required data",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"oleg\",\n    \"lastName\": \"test\",\n    \"middleName\": \"test\",\n    \"experience\": 5\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-player/create",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-player",
+														"create"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "No team with given id",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"oleg\",\n    \"lastName\": \"test\",\n    \"middleName\": \"test\",\n    \"experience\": 5,\n    \"age\": 23,\n    \"teamId\": 188\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-player/create",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-player",
+														"create"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Get player by id",
+									"item": [
+										{
+											"name": "Player not found",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-player/getById?playerId=824",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-player",
+														"getById"
+													],
+													"query": [
+														{
+															"key": "playerId",
+															"value": "824"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Missing request param",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-player/getById",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-player",
+														"getById"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Update player",
+									"item": [
+										{
+											"name": "Missing request param",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"oleg2\",\n    \"lastName\": \"test1\",\n    \"middleName\": \"test1\",\n    \"experience\": 10,\n    \"age\": 26,\n    \"teamId\": 1\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-player/update",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-player",
+														"update"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Missing required data",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"oleg2\",\n    \"lastName\": \"test1\",\n    \"middleName\": \"test1\",\n    \"experience\": 10,\n    \"age\": 26\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-player/update?playerId=1",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-player",
+														"update"
+													],
+													"query": [
+														{
+															"key": "playerId",
+															"value": "1"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Team not found",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"oleg2\",\n    \"lastName\": \"test1\",\n    \"middleName\": \"test1\",\n    \"experience\": 10,\n    \"age\": 26,\n    \"teamId\": 845\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-player/update?playerId=1",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-player",
+														"update"
+													],
+													"query": [
+														{
+															"key": "playerId",
+															"value": "1"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Player not found",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"oleg2\",\n    \"lastName\": \"test1\",\n    \"middleName\": \"test1\",\n    \"experience\": 10,\n    \"age\": 26,\n    \"teamId\": 2\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-player/update?playerId=345",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-player",
+														"update"
+													],
+													"query": [
+														{
+															"key": "playerId",
+															"value": "345"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Delete player",
+									"item": [
+										{
+											"name": "Missing request param",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-player/delete",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-player",
+														"delete"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Player not found",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-player/delete?playerId=954",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-player",
+														"delete"
+													],
+													"query": [
+														{
+															"key": "playerId",
+															"value": "954"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "JDBC Template",
+							"item": [
+								{
+									"name": "Create player",
+									"item": [
+										{
+											"name": "Missing required data",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"oleg\",\n    \"lastName\": \"test\",\n    \"middleName\": \"test\",\n    \"experience\": 5\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-player/create",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-player",
+														"create"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "No team with given id",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"oleg\",\n    \"lastName\": \"test\",\n    \"middleName\": \"test\",\n    \"experience\": 5,\n    \"age\": 23,\n    \"teamId\": 188\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-player/create",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-player",
+														"create"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Get player by id",
+									"item": [
+										{
+											"name": "Player not found",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-player/getById?playerId=824",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-player",
+														"getById"
+													],
+													"query": [
+														{
+															"key": "playerId",
+															"value": "824"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Missing request param",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-player/getById",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-player",
+														"getById"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Update player",
+									"item": [
+										{
+											"name": "Missing request param",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"oleg2\",\n    \"lastName\": \"test1\",\n    \"middleName\": \"test1\",\n    \"experience\": 10,\n    \"age\": 26,\n    \"teamId\": 1\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-player/update",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-player",
+														"update"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Missing required data",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"oleg2\",\n    \"lastName\": \"test1\",\n    \"middleName\": \"test1\",\n    \"experience\": 10,\n    \"age\": 26\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-player/update?playerId=1",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-player",
+														"update"
+													],
+													"query": [
+														{
+															"key": "playerId",
+															"value": "1"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Team not found",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"oleg2\",\n    \"lastName\": \"test1\",\n    \"middleName\": \"test1\",\n    \"experience\": 10,\n    \"age\": 26,\n    \"teamId\": 845\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-player/update?playerId=1",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-player",
+														"update"
+													],
+													"query": [
+														{
+															"key": "playerId",
+															"value": "1"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Player not found",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"firstName\": \"oleg2\",\n    \"lastName\": \"test1\",\n    \"middleName\": \"test1\",\n    \"experience\": 10,\n    \"age\": 26,\n    \"teamId\": 2\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-player/update?playerId=345",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-player",
+														"update"
+													],
+													"query": [
+														{
+															"key": "playerId",
+															"value": "345"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Delete player",
+									"item": [
+										{
+											"name": "Missing request param",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-player/delete",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-player",
+														"delete"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Player not found",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-player/delete?playerId=954",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-player",
+														"delete"
+													],
+													"query": [
+														{
+															"key": "playerId",
+															"value": "954"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Teams requests",
+			"item": [
+				{
+					"name": "Good requests",
+					"item": [
+						{
+							"name": "Hibernate",
+							"item": [
+								{
+									"name": "Get all teams",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/hi-team/getAll",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"hi-team",
+												"getAll"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get team by id",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "teamId",
+													"value": "1",
+													"type": "text"
+												}
+											]
+										},
+										"url": {
+											"raw": "localhost:8090/api/v1/hi-team/getById",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"hi-team",
+												"getById"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create team",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Team CREATED Hibernate\",\n    \"teamCommission\": 10,\n    \"balanceUSD\": 1023079\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8090/api/v1/hi-team/create",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"hi-team",
+												"create"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update team info",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Team UPDATED Hibernate\",\n    \"teamCommission\": 1,\n    \"balanceUSD\": 12\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8090/api/v1/hi-team/update?teamId=2",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"hi-team",
+												"update"
+											],
+											"query": [
+												{
+													"key": "teamId",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Remove team",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/hi-team/delete?teamId=2",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"hi-team",
+												"delete"
+											],
+											"query": [
+												{
+													"key": "teamId",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "JDBC Template",
+							"item": [
+								{
+									"name": "Get all teams",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/jdbc-team/getAll",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"jdbc-team",
+												"getAll"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get team by id",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/jdbc-team/getById?teamId=2",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"jdbc-team",
+												"getById"
+											],
+											"query": [
+												{
+													"key": "teamId",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create team",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Team CREATED JDBC\",\n    \"teamCommission\": 10,\n    \"balanceUSD\": 10230\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8090/api/v1/jdbc-team/create",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"jdbc-team",
+												"create"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update team info",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Team UPDATED JDBC\",\n    \"teamCommission\": 5,\n    \"balanceUSD\": 800000\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "localhost:8090/api/v1/jdbc-team/update?teamId=4",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"jdbc-team",
+												"update"
+											],
+											"query": [
+												{
+													"key": "teamId",
+													"value": "4"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "New Request",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "localhost:8090/api/v1/jdbc-team/delete?teamId=2",
+											"host": [
+												"localhost"
+											],
+											"port": "8090",
+											"path": [
+												"api",
+												"v1",
+												"jdbc-team",
+												"delete"
+											],
+											"query": [
+												{
+													"key": "teamId",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Bad requests",
+					"item": [
+						{
+							"name": "Hibernate",
+							"item": [
+								{
+									"name": "Create team",
+									"item": [
+										{
+											"name": "Missing required data",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Team CREATED Hibernate\",\n    \"teamCommission\": 10\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-team/create",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-team",
+														"create"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Missing all required data",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Team CREATED Hibernate\",\n    \"teamCommission\": 10\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-team/create",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-team",
+														"create"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Get team by id",
+									"item": [
+										{
+											"name": "Missing request param",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-team/getById",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-team",
+														"getById"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Team by id not found",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-team/getById?teamId=865",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-team",
+														"getById"
+													],
+													"query": [
+														{
+															"key": "teamId",
+															"value": "865"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Delete team",
+									"item": [
+										{
+											"name": "Missing request param",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-team/delete",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-team",
+														"delete"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Team by id not found",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-team/delete?teamId=857",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-team",
+														"delete"
+													],
+													"query": [
+														{
+															"key": "teamId",
+															"value": "857"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Update team",
+									"item": [
+										{
+											"name": "Missing request param",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Team UPDATED Hibernate\",\n    \"teamCommission\": 1,\n    \"balanceUSD\": 12\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-team/update",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-team",
+														"update"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Team by id not found",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Team UPDATED Hibernate\",\n    \"teamCommission\": 1,\n    \"balanceUSD\": 12\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-team/update?teamId=758",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-team",
+														"update"
+													],
+													"query": [
+														{
+															"key": "teamId",
+															"value": "758"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Missing all required data",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-team/update?teamId=3",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-team",
+														"update"
+													],
+													"query": [
+														{
+															"key": "teamId",
+															"value": "3"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Missing required data",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Team UPDATED JDBC\",\n    \"teamCommission\": 5\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/hi-team/update?teamId=3",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"hi-team",
+														"update"
+													],
+													"query": [
+														{
+															"key": "teamId",
+															"value": "3"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						},
+						{
+							"name": "JDBC Template",
+							"item": [
+								{
+									"name": "Create team Copy",
+									"item": [
+										{
+											"name": "Missing required data",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Team CREATED Hibernate\",\n    \"teamCommission\": 10\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-team/create",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-team",
+														"create"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Missing all required data",
+											"request": {
+												"method": "POST",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-team/create",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-team",
+														"create"
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Get team by id Copy",
+									"item": [
+										{
+											"name": "Missing request param",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-team/getById",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-team",
+														"getById"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Team by id not found",
+											"request": {
+												"method": "GET",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-team/getById?teamId=865",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-team",
+														"getById"
+													],
+													"query": [
+														{
+															"key": "teamId",
+															"value": "865"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Delete team Copy",
+									"item": [
+										{
+											"name": "Missing request param",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-team/delete",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-team",
+														"delete"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Team by id not found",
+											"request": {
+												"method": "DELETE",
+												"header": [],
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-team/delete?teamId=857",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-team",
+														"delete"
+													],
+													"query": [
+														{
+															"key": "teamId",
+															"value": "857"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								},
+								{
+									"name": "Update team Copy",
+									"item": [
+										{
+											"name": "Missing request param",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Team UPDATED Hibernate\",\n    \"teamCommission\": 1,\n    \"balanceUSD\": 12\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-team/update",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-team",
+														"update"
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Team by id not found",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Team UPDATED Hibernate\",\n    \"teamCommission\": 1,\n    \"balanceUSD\": 12\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-team/update?teamId=758",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-team",
+														"update"
+													],
+													"query": [
+														{
+															"key": "teamId",
+															"value": "758"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Missing all required data",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-team/update?teamId=3",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-team",
+														"update"
+													],
+													"query": [
+														{
+															"key": "teamId",
+															"value": "3"
+														}
+													]
+												}
+											},
+											"response": []
+										},
+										{
+											"name": "Missing required data",
+											"request": {
+												"method": "PUT",
+												"header": [],
+												"body": {
+													"mode": "raw",
+													"raw": "{\n    \"name\": \"Team UPDATED JDBC\",\n    \"teamCommission\": 5\n}",
+													"options": {
+														"raw": {
+															"language": "json"
+														}
+													}
+												},
+												"url": {
+													"raw": "localhost:8090/api/v1/jdbc-team/update?teamId=3",
+													"host": [
+														"localhost"
+													],
+													"port": "8090",
+													"path": [
+														"api",
+														"v1",
+														"jdbc-team",
+														"update"
+													],
+													"query": [
+														{
+															"key": "teamId",
+															"value": "3"
+														}
+													]
+												}
+											},
+											"response": []
+										}
+									]
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
