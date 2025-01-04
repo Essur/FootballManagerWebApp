@@ -35,6 +35,6 @@ This project is a REST API football management system developed using Java and S
 
 ## Postman collection
 
-**There is two options to get collection**
-1. Improt from file Football-Manager-Web-App.postman_collection.json
+**There are two options to get collection**
+1. Import from the file Football-Manager-Web-App.postman_collection.json
 2. Go to public collection on [Link](https://www.postman.com/essur/workspace/public-workspace/collection/24976968-615ce228-c69c-4a28-b24f-7ec0999b8dda?action=share&creator=24976968)
