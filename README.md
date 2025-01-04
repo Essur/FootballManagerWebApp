@@ -14,6 +14,16 @@ This project is a REST API football management system developed using Java and S
 - **Database**: H2 Database in-memory
 - **Build Tool**: Maven
 
+## Server port and H2-console
+   **Server port**: By default, the application runs on port `8090`. You can change the port by modifying the `application.properties` file:
+   ```properties
+   server.port=8090
+   ```
+   **H2-console**: 
+   ```url
+   http://localhost:8090/h2-console
+   ```
+
 ## Getting Started
 
 ### Prerequisites
