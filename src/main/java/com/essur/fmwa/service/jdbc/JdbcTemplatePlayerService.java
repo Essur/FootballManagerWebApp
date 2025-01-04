@@ -7,6 +7,7 @@ import com.essur.fmwa.model.PlayerDTO;
 import com.essur.fmwa.model.request.UpdatePlayerRequest;
 import com.essur.fmwa.model.response.PlayerInfoResponse;
 import com.essur.fmwa.utils.mapper.PlayerInfoResponseMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -29,12 +30,14 @@ import java.util.Optional;
 public class JdbcTemplatePlayerService {
     private final JdbcTemplate jdbcTemplate;
 
+    @Transactional
     public Long createPlayer(PlayerDTO player) {
+        checkTeamInDB(player.getTeamId());
+
         String sql = """
                 INSERT INTO players (first_name, last_name, middle_name, experience_in_months, age, team_id) 
                 VALUES (?, ?, ?, ?, ?, ?)
                 """;
-
 
         KeyHolder keyHolder = new GeneratedKeyHolder();
 
@@ -51,6 +54,7 @@ public class JdbcTemplatePlayerService {
 
         return Objects.requireNonNull(keyHolder.getKey()).longValue();
     }
+
 
     public PlayerInfoResponse getPlayerById(Long playerId) {
         String sql = """
@@ -69,8 +73,10 @@ public class JdbcTemplatePlayerService {
         return PlayerInfoResponseMapper.getPlayerInfoResponse(player.get(0));
     }
 
+    @Transactional
     public PlayerInfoResponse updatePlayer(Long playerId, UpdatePlayerRequest updatePlayerRequest) {
         checkPlayerInDB(playerId);
+        checkTeamInDB(updatePlayerRequest.getTeamId());
 
         String sql = """
                 UPDATE players
@@ -89,6 +95,7 @@ public class JdbcTemplatePlayerService {
         return getPlayerById(playerId);
     }
 
+    @Transactional
     public void deletePlayer(Long playerId) {
         checkPlayerInDB(playerId);
 
@@ -113,13 +120,6 @@ public class JdbcTemplatePlayerService {
         return PlayerInfoResponseMapper.getPlayerInfoResponse(players);
     }
 
-    private void checkPlayerInDB(Long playerId) {
-        String checkPlayerSql = "SELECT COUNT(*) FROM players WHERE id = ?";
-        int count = Optional.ofNullable(jdbcTemplate.queryForObject(checkPlayerSql, Integer.class, playerId)).orElse(0);
-        if (count == 0) {
-            throw new DataNotFoundException("Player with ID " + playerId + " not found.");
-        }
-    }
 
     public Player getPlayerEntityById(Long playerId) {
         String sql = """
@@ -136,6 +136,7 @@ public class JdbcTemplatePlayerService {
         return player.get(0);
     }
 
+
     public void updatePlayerData(Player player) {
         String sql = """
                 UPDATE players
@@ -146,6 +147,26 @@ public class JdbcTemplatePlayerService {
         jdbcTemplate.update(sql,
                 player.getTeam().getId(),
                 player.getId());
+    }
+
+    private void checkPlayerInDB(Long playerId) {
+        String checkPlayerSql = "SELECT COUNT(*) FROM players WHERE id = ?";
+        int count = Optional.ofNullable(jdbcTemplate.queryForObject(checkPlayerSql, Integer.class, playerId)).orElse(0);
+        if (count == 0) {
+            throw new DataNotFoundException("Player with ID " + playerId + " not found.");
+        }
+    }
+
+    private void checkTeamInDB(Long playerId) {
+        String checkTeamInDB = """
+                SELECT COUNT(*) FROM teams WHERE id = ?
+                """;
+
+        Integer count = jdbcTemplate.queryForObject(checkTeamInDB, Integer.class, playerId);
+
+        if (count == null || count == 0) {
+            throw new DataNotFoundException("Team with id " + playerId + " not found");
+        }
     }
 
     private static class PlayerRowMapper implements RowMapper<Player>, Serializable {

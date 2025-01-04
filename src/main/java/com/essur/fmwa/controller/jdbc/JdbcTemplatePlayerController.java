@@ -5,6 +5,7 @@ import com.essur.fmwa.model.PlayerDTO;
 import com.essur.fmwa.model.request.UpdatePlayerRequest;
 import com.essur.fmwa.model.response.PlayerInfoResponse;
 import com.essur.fmwa.service.jdbc.JdbcTemplatePlayerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +20,7 @@ public class JdbcTemplatePlayerController {
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(value = Routes.JDBC_CREATE_PLAYER, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Long createPlayer(@RequestBody PlayerDTO playerDTO) {
+    public Long createPlayer(@RequestBody @Valid PlayerDTO playerDTO) {
         return jdbcTemplatePlayerService.createPlayer(playerDTO);
     }
 
@@ -38,7 +39,7 @@ public class JdbcTemplatePlayerController {
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping(value = Routes.JDBC_UPDATE_PLAYER_BY_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
     public PlayerInfoResponse updatePlayer(@RequestParam Long playerId,
-                                           @RequestBody UpdatePlayerRequest updatePlayerRequest) {
+                                           @RequestBody @Valid UpdatePlayerRequest updatePlayerRequest) {
         return jdbcTemplatePlayerService.updatePlayer(playerId, updatePlayerRequest);
     }
 

@@ -8,6 +8,7 @@ import com.essur.fmwa.model.TeamDTO;
 import com.essur.fmwa.model.request.UpdateTeamRequest;
 import com.essur.fmwa.model.response.TeamInfoResponse;
 import com.essur.fmwa.utils.mapper.TeamInfoResponseMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -30,6 +31,7 @@ import java.util.Optional;
 public class JdbcTemplateTeamService {
     private final JdbcTemplate jdbcTemplate;
 
+    @Transactional
     public Long createTeam(TeamDTO teamDTO) {
         if (teamDTO.getTeamCommission() > 10) {
             throw new BadRequestException("Commission must be 10 or less");
@@ -100,7 +102,7 @@ public class JdbcTemplateTeamService {
         jdbcTemplate.update(sql, teamId);
     }
 
-    public List<TeamInfoResponse> getAllPlayers() {
+    public List<TeamInfoResponse> getAllTeams() {
         String sql = """
                 SELECT t.id AS team_id, t.team_name, t.commission, t.balance_usd,
                        p.id AS player_id, p.first_name, p.last_name, p.middle_name, p.experience_in_months, p.age

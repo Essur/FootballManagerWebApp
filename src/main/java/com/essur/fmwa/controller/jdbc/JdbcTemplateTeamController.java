@@ -5,6 +5,7 @@ import com.essur.fmwa.model.TeamDTO;
 import com.essur.fmwa.model.request.UpdateTeamRequest;
 import com.essur.fmwa.model.response.TeamInfoResponse;
 import com.essur.fmwa.service.jdbc.JdbcTemplateTeamService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,7 +20,7 @@ public class JdbcTemplateTeamController {
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(value = Routes.JDBC_CREATE_TEAM, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Long createTeam(@RequestBody TeamDTO teamDTO) {
+    public Long createTeam(@RequestBody @Valid TeamDTO teamDTO) {
         return jdbcTemplateTeamService.createTeam(teamDTO);
     }
 
@@ -32,12 +33,12 @@ public class JdbcTemplateTeamController {
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = Routes.JDBC_GET_ALL_TEAMS)
     public List<TeamInfoResponse> getAllTeams() {
-        return jdbcTemplateTeamService.getAllPlayers();
+        return jdbcTemplateTeamService.getAllTeams();
     }
 
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping(value = Routes.JDBC_UPDATE_TEAM_BY_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public TeamInfoResponse updateTeam(@RequestParam("teamId") Long teamId, @RequestBody UpdateTeamRequest updateTeamRequest) {
+    public TeamInfoResponse updateTeam(@RequestParam("teamId") Long teamId, @RequestBody @Valid UpdateTeamRequest updateTeamRequest) {
         return jdbcTemplateTeamService.updateTeam(teamId, updateTeamRequest);
     }
 

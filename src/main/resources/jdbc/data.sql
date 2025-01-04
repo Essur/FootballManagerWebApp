@@ -4,7 +4,7 @@
 INSERT INTO teams (team_name, commission, balance_usd)
 VALUES ('Team A', 10, 500000),
        ('Team B', 10, 800000),
-       ('Team C', 5, 300000);
+       ('Team C', 5, 30000);
 
 -- Inserting players
 INSERT INTO players (first_name, last_name, middle_name, experience_in_months, age, team_id)

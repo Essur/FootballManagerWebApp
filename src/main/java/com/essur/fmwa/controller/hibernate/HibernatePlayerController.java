@@ -5,6 +5,7 @@ import com.essur.fmwa.model.PlayerDTO;
 import com.essur.fmwa.model.request.UpdatePlayerRequest;
 import com.essur.fmwa.model.response.PlayerInfoResponse;
 import com.essur.fmwa.service.hibernate.HibernatePlayerService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,14 +26,14 @@ public class HibernatePlayerController {
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(value = Routes.H_CREATE_PLAYER, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Long createPlayer(@RequestBody PlayerDTO playerDTO) {
+    public Long createPlayer(@RequestBody @Valid PlayerDTO playerDTO) {
         return hibernatePlayerService.createPlayer(playerDTO);
     }
 
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping(value = Routes.H_UPDATE_PLAYER_BY_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
     public PlayerInfoResponse updatePlayer(@RequestParam("playerId") Long playerId,
-                                           @RequestBody UpdatePlayerRequest playerDTO) {
+                                           @RequestBody @Valid UpdatePlayerRequest playerDTO) {
         return hibernatePlayerService.updatePlayerById(playerId, playerDTO);
     }
 

@@ -5,6 +5,7 @@ import com.essur.fmwa.model.TeamDTO;
 import com.essur.fmwa.model.request.UpdateTeamRequest;
 import com.essur.fmwa.model.response.TeamInfoResponse;
 import com.essur.fmwa.service.hibernate.HibernateTeamService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -31,13 +32,13 @@ public class HibernateTeamController {
 
     @ResponseStatus(value = HttpStatus.CREATED)
     @PostMapping(value = Routes.H_CREATE_TEAM, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public Long createTeam(@RequestBody TeamDTO teamDTO) {
+    public Long createTeam(@RequestBody @Valid TeamDTO teamDTO) {
         return hibernateTeamService.createTeam(teamDTO);
     }
 
     @ResponseStatus(value = HttpStatus.OK)
     @PutMapping(value = Routes.H_UPDATE_TEAM_BY_ID, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public TeamInfoResponse updateTeam(@RequestParam Long teamId, @RequestBody UpdateTeamRequest updateTeamRequest) {
+    public TeamInfoResponse updateTeam(@RequestParam Long teamId, @RequestBody @Valid UpdateTeamRequest updateTeamRequest) {
         return hibernateTeamService.updateTeam(teamId, updateTeamRequest);
     }
 
