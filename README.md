@@ -10,9 +10,23 @@ This project is a REST API football management system developed using Java and S
 
 ## Technologies Used
 
-- **Backend**: Java, Spring Boot, Hibernate, JDBC Template, Slf4j (for logging)
-- **Database**: H2 Database in-memory
-- **Build Tool**: Maven
+- **Backend** : Java, Spring Boot, Hibernate, JDBC Template, Slf4j (for logging)
+- **Database** : H2 Database in-memory
+- **Build Tool** : Maven
+
+## Server port, H2-console and Swagger Docs UI
+  **Server port** : By default, the application runs on port `8090`. You can change the port by modifying the `application.properties`
+  ```properties
+  server.port=8090
+  ```
+  **H2-console** : 
+  ```url
+  http://localhost:8090/h2-console
+  ```
+  **Swagger doc** : Can be accessed by following the link
+  ```url
+  http://localhost:8090/swagger-ui/index.html
+  ```
 
 ## Getting Started
 
@@ -23,18 +37,18 @@ This project is a REST API football management system developed using Java and S
 
 ### Installation
 
-1. **Clone the repository**:
+1. **Clone the repository** :
    ```bash
    git clone https://github.com/Essur/FootballManagerWebApp.git
-2. **Navigate to project dir**:
+2. **Navigate to project dir** :
    ```bash
    cd FootballManagerWebApp
-3. **Build and start project in one command**:
+3. **Build and start project in one command** :
    ```bash
    ./mvnw clean package spring-boot:run
 
 ## Postman collection
 
-**There is two options to get collection**
-1. Improt from file Football-Manager-Web-App.postman_collection.json
+**There are two options to get collection**
+1. Import from the file Football-Manager-Web-App.postman_collection.json
 2. Go to public collection on [Link](https://www.postman.com/essur/workspace/public-workspace/collection/24976968-615ce228-c69c-4a28-b24f-7ec0999b8dda?action=share&creator=24976968)
